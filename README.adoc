@@ -1,0 +1,52 @@
+= OAuth 2 with Spring Boot 2 UAA Sample
+:imagesdir: flows
+:uri-gradle: https://gradle.org
+:uri-uaa: http://github.com/cloudfoundry/uaa
+:uri-uaac: https://github.com/cloudfoundry/cf-uaac
+:uri-spring-boot: https://github.com/spring-projects/spring-boot
+
+This sample is based on http://www.java-allandsundry.com/2018/03/spring-boot-2-native-approach-to-sso.html[this blog post] wich explains many details.
+Read it!
+
+These are the current versions of components used here:
+
+* {uri-gradle}[Gradle^]: 5.2.1.
+* {uri-uaa}[UAA server^]: 4.28.0.
+* {uri-uaac}[UAA Command Line Client (uaac)]: 4.1.0.
+* {uri-spring-boot}[Spring Boot^]: 2.1.3-RELEASE.
+
+NOTE: You can also see https://github.com/paulojeronimo/oauth-uaa-sample[this respository] if you want an example based on Spring Boot 1.5.
+
+== Start an OAuth2 authorization server
+
+Start the UAA server.
+
+Type following command line to populate the details of the actors involved in this sample:
+
+[source,bash]
+----
+$ ./uaa-populate.sh
+----
+
+NOTE: The script link:uaa-populate.sh[] uses the `uaac` command line utility so you need to install it first.
+
+== Start the resource Server
+
+[source, bash]
+----
+./gradlew -p applications/oauth2-boot2-resourceserver/ clean bootRun
+----
+
+== Start the client
+
+[source, bash]
+----
+./gradlew -p applications/oauth2-boot2-legacy/ clean bootRun
+----
+
+== Test An Authorization Code flow
+
+image::Authorization_Code_Flow.png[Authorization Code Grant Type]
+
+Go to UI available at http://localhost:8888/ and click the UI to access a secure page. +
+Login with `user1/user1` when prompted.

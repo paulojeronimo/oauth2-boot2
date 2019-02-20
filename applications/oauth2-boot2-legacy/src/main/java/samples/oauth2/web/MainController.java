@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import samples.oauth2.service.DownstreamServiceHandler;
 import samples.oauth2.service.TokenBeautifier;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +33,9 @@ public class MainController {
     @Autowired
     private TokenBeautifier tokenBeautifier;
 
+    @Autowired
+    private DownstreamServiceHandler downstreamServiceHandler;
+
     @ModelAttribute
     public void addCommonAttributes(Model model) {
         model.addAttribute("ssoServiceUrl", ssoServiceUrl);
@@ -52,6 +56,20 @@ public class MainController {
             model.addAttribute("access_token", tokenBeautifier.formatJwtToken(tokenValue));
         }
         return "show_token";
+    }
+
+    @RequestMapping("/secured/read")
+    public String callDownStreamWithReadScope(Model model) {
+        String received = this.downstreamServiceHandler.callRead();
+        model.addAttribute("received", received);
+        return "showvalue";
+    }
+
+    @RequestMapping("/secured/write")
+    public String callDownStreamWithWriteScope(Model model) {
+        String received = this.downstreamServiceHandler.callWrite();
+        model.addAttribute("received", received);
+        return "showvalue";
     }
 
     @RequestMapping(value = "/userlogout", method = GET)

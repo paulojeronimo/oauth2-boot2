@@ -3,6 +3,8 @@ ssoServiceUrl: http://localhost:8080/uaa
 server:
   port: 8888
 spring:
+  main:
+    allow-bean-definition-overriding: true
   thymeleaf:
     cache: false
 security:
@@ -19,3 +21,5 @@ security:
 
 logging.level:
   org.springframework.security: INFO
+
+resourceServerUrl: ${RESOURCE_URL:http://localhost:9999}
